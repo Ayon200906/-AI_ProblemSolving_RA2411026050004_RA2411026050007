@@ -4,7 +4,6 @@
 Two standalone Python desktop applications built with **Tkinter**, covering a classic combinatorial optimisation problem and a supervised machine learning pipeline.
 
 ---
-
 ##  Project Structure
 
 ```
