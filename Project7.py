@@ -17,9 +17,8 @@ from itertools import permutations
 import math
 
 
-# ─────────────────────────────────────────────────────────────────────────────
 # Color Palette & Styling
-# ─────────────────────────────────────────────────────────────────────────────
+
 BG_DARK     = "#0f1117"
 BG_CARD     = "#1a1d27"
 BG_INPUT    = "#242736"
@@ -38,9 +37,9 @@ FONT_RESULT = ("Courier New", 12, "bold")
 FONT_BTN    = ("Georgia", 11, "bold")
 
 
-# ─────────────────────────────────────────────────────────────────────────────
+
 # Main Application Class
-# ─────────────────────────────────────────────────────────────────────────────
+
 class TSPTravelPlanner:
     def __init__(self, root):
         self.root = root
@@ -56,12 +55,12 @@ class TSPTravelPlanner:
 
         self._build_ui()
 
-    # ─────────────────────────────────────────────────────────────────────────
+    
     # UI Construction
-    # ─────────────────────────────────────────────────────────────────────────
+    
     def _build_ui(self):
         """Build the full application layout."""
-        # ── Header ────────────────────────────────────────────────────────────
+        # Header 
         header = tk.Frame(self.root, bg=BG_DARK, pady=20)
         header.pack(fill="x", padx=30)
 
@@ -73,7 +72,7 @@ class TSPTravelPlanner:
         # Divider
         tk.Frame(self.root, bg=ACCENT, height=2).pack(fill="x", padx=30)
 
-        # ── Three-column body ─────────────────────────────────────────────────
+        # Three-column body 
         body = tk.Frame(self.root, bg=BG_DARK)
         body.pack(fill="both", expand=True, padx=30, pady=20)
         body.columnconfigure(0, weight=1)
@@ -85,7 +84,7 @@ class TSPTravelPlanner:
         self._build_distance_panel(body)
         self._build_result_panel(body)
 
-    # ── Section 1: City Panel ────────────────────────────────────────────────
+    # Section 1: City Panel 
     def _build_city_panel(self, parent):
         card = self._card(parent, "① Add Destinations", col=0)
 
@@ -131,7 +130,7 @@ class TSPTravelPlanner:
         tk.Label(card, textvariable=self.city_count_var,
                  font=FONT_BODY, bg=BG_CARD, fg=TEXT_SUB).pack(pady=(0, 10))
 
-    # ── Section 2: Distance Panel ────────────────────────────────────────────
+    # Section 2: Distance Panel 
     def _build_distance_panel(self, parent):
         card = self._card(parent, "② Enter Distances (km)", col=1)
 
@@ -163,7 +162,7 @@ class TSPTravelPlanner:
         )
         self.dist_placeholder.grid(row=0, column=0, pady=30, padx=30)
 
-    # ── Section 3: Result Panel ──────────────────────────────────────────────
+    # Section 3: Result Panel 
     def _build_result_panel(self, parent):
         card = self._card(parent, "③ Optimal Route", col=2)
 
@@ -223,9 +222,9 @@ class TSPTravelPlanner:
         self._btn(card, "↺  Reset All", self._reset_all,
                   color=ACCENT2, fill="x", padx=16, pady=(0, 12))
 
-    # ─────────────────────────────────────────────────────────────────────────
+    
     # Helper Widgets
-    # ─────────────────────────────────────────────────────────────────────────
+    
     def _card(self, parent, title, col):
         """Create a styled card frame placed in the given grid column."""
         outer = tk.Frame(parent, bg=BORDER, bd=1)
@@ -261,9 +260,9 @@ class TSPTravelPlanner:
             btn.pack(fill=fill, padx=padx, pady=pady)
         return btn
 
-    # ─────────────────────────────────────────────────────────────────────────
+    
     # Distance Grid (Canvas scroll helpers)
-    # ─────────────────────────────────────────────────────────────────────────
+    
     def _on_dist_configure(self, event):
         self.dist_canvas.configure(
             scrollregion=self.dist_canvas.bbox("all"))
@@ -272,9 +271,9 @@ class TSPTravelPlanner:
         self.dist_canvas.itemconfig(
             self.dist_window, width=event.width)
 
-    # ─────────────────────────────────────────────────────────────────────────
+    
     # City Management
-    # ─────────────────────────────────────────────────────────────────────────
+  
     def _add_city(self):
         """Add a new city destination."""
         name = self.city_var.get().strip().title()
@@ -324,10 +323,9 @@ class TSPTravelPlanner:
     def _update_city_count(self):
         n = len(self.cities)
         self.city_count_var.set(f"{n} {'city' if n == 1 else 'cities'} added")
-
-    # ─────────────────────────────────────────────────────────────────────────
+      
     # Distance Grid
-    # ─────────────────────────────────────────────────────────────────────────
+  
     def _rebuild_distance_grid(self):
         """Rebuild the distance-entry grid based on current cities."""
         # Clear old widgets
@@ -407,12 +405,12 @@ class TSPTravelPlanner:
         except ValueError:
             pass  # Ignore invalid input silently; caught at solve time
 
-    # ─────────────────────────────────────────────────────────────────────────
+    
     # TSP Solver (Brute-Force)
-    # ─────────────────────────────────────────────────────────────────────────
+    
     def _solve_tsp(self):
         """Solve TSP using brute-force permutation search."""
-        # ── Pre-checks ────────────────────────────────────────────────────────
+        # Pre-checks 
         n = len(self.cities)
         if n < 2:
             messagebox.showwarning("Not Enough Cities",
@@ -444,7 +442,7 @@ class TSPTravelPlanner:
             )
             return
 
-        # ── Brute-Force TSP ───────────────────────────────────────────────────
+        # Brute-Force TSP 
         start_city = self.cities[0]
         other_cities = self.cities[1:]
 
@@ -469,7 +467,7 @@ class TSPTravelPlanner:
                 best_distance = total
                 best_route = route
 
-        # ── Display Results ───────────────────────────────────────────────────
+        # Display Results 
         if best_route is None:
             messagebox.showerror("Error", "Could not compute a valid route.")
             return
@@ -482,9 +480,9 @@ class TSPTravelPlanner:
             f"✓ Optimal route found!\n{n} cities, {n} legs.")
         self.status_label.config(fg=SUCCESS)
 
-    # ─────────────────────────────────────────────────────────────────────────
+  
     # Helpers
-    # ─────────────────────────────────────────────────────────────────────────
+  
     def _set_route_text(self, text):
         """Write text into the read-only route Text widget."""
         self.route_text.config(state="normal")
@@ -512,9 +510,9 @@ class TSPTravelPlanner:
         self.status_label.config(fg=TEXT_SUB)
 
 
-# ─────────────────────────────────────────────────────────────────────────────
+
 # Entry Point
-# ─────────────────────────────────────────────────────────────────────────────
+
 if __name__ == "__main__":
     root = tk.Tk()
     app = TSPTravelPlanner(root)
