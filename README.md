@@ -79,7 +79,7 @@ python3 tsp_travel_planner.py
 **Step 1 — Add Cities**
 - Type a city name in the input field (e.g. `Paris`) and press **Enter** or click **Add**.
 - Add between 2 and 10 cities. City names are auto title-cased.
-- Select a city in the list and click **✕ Remove Selected** to delete it.
+- Select a city in the list and click **Remove Selected** to delete it.
 
 **Step 2 — Enter Distances**
 - The centre panel auto-generates one entry field per unique city pair.
@@ -87,11 +87,11 @@ python3 tsp_travel_planner.py
 - Distances are symmetric — entering A→B automatically covers B→A.
 
 **Step 3 — Compute Optimal Route**
-- Click **🗺 Find Optimal Route** in the right panel.
+- Click ** Find Optimal Route** in the right panel.
 - The app validates all distances, runs the brute-force solver, and displays the result.
 
 **Step 4 — Reset**
-- Click **↺ Reset All** to clear everything and start a new problem.
+- Click **Reset All** to clear everything and start a new problem.
 
 ### Sample Output
 
@@ -118,13 +118,13 @@ TOTAL DISTANCE
 
 **Error handling examples:**
 ```
-⚠ Missing distances for: Paris ↔ Berlin, London ↔ Amsterdam
+ Missing distances for: Paris ↔ Berlin, London ↔ Amsterdam
   → Solver blocked until all fields are filled
 
-⚠ "London" is already in the list.
+ "London" is already in the list.
   → Duplicate city rejected
 
-⚠ Maximum 10 cities supported (brute-force is O(n!)).
+ Maximum 10 cities supported (brute-force is O(n!)).
   → Hard cap enforced
 ```
 
@@ -228,7 +228,7 @@ The application has **three tabs**:
 
 ---
 
-**Tab ① — Dataset**
+**Tab — Dataset**
 
 Choose one of three data sources:
 
@@ -250,7 +250,7 @@ After loading, the **Data Preview** table on the right populates with up to 200 
 
 ---
 
-**Tab ② — Train Model**
+**Tab — Train Model**
 
 - Set the **test split %** (5–50, default 20%).
 - Click ** Train Model**.
@@ -258,7 +258,7 @@ After loading, the **Data Preview** table on the right populates with up to 200 
 
 ---
 
-**Tab ③ — Predict**
+**Tab — Predict**
 
 - Enter values for all four features.
 - Click ** Predict Score**.
