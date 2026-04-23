@@ -22,7 +22,7 @@ import random
 import csv
 import io
 
-# ── ML / Data ─────────────────────────────────────────────────────────────────
+# ML / Data 
 try:
     import numpy as np
     import pandas as pd
@@ -34,9 +34,9 @@ try:
 except ImportError:
     ML_AVAILABLE = False
 
-# ─────────────────────────────────────────────────────────────────────────────
+
 # Design Tokens
-# ─────────────────────────────────────────────────────────────────────────────
+
 BG        = "#0d1117"
 SURFACE   = "#161b22"
 CARD      = "#1e2430"
@@ -66,9 +66,9 @@ FEATURES  = ["Hours Studied", "Attendance %", "Previous Score", "Assignments Don
 TARGET    = "Exam Score"
 COL_NAMES = FEATURES + [TARGET]
 
-# ─────────────────────────────────────────────────────────────────────────────
+
 # Synthetic Dataset Generator
-# ─────────────────────────────────────────────────────────────────────────────
+
 def generate_synthetic_data(n: int = 120) -> pd.DataFrame:
     """
     Generate a realistic synthetic student dataset.
@@ -99,9 +99,9 @@ def generate_synthetic_data(n: int = 120) -> pd.DataFrame:
     })
 
 
-# ─────────────────────────────────────────────────────────────────────────────
+
 # ML Pipeline
-# ─────────────────────────────────────────────────────────────────────────────
+
 class StudentModel:
     """Encapsulates data processing, training, and prediction."""
 
@@ -158,7 +158,7 @@ class StudentModel:
         note = f" ({before - after} rows removed)" if before != after else ""
         return True, f"Loaded {after} rows{note}."
 
-    # ── Training ──────────────────────────────────────────────────────────────
+    # Training 
     def train(self, test_size: float = 0.2) -> tuple[bool, str]:
         """Split data, scale, fit Linear Regression, compute metrics."""
         if self.df is None:
@@ -193,7 +193,7 @@ class StudentModel:
         self.trained = True
         return True, "Model trained successfully."
 
-    # ── Prediction ────────────────────────────────────────────────────────────
+    # Prediction 
     def predict_one(self, values: list[float]) -> tuple[bool, float | str]:
         """Predict exam score for a single student."""
         if not self.trained:
@@ -207,9 +207,9 @@ class StudentModel:
             return False, str(e)
 
 
-# ─────────────────────────────────────────────────────────────────────────────
+
 # GUI Application
-# ─────────────────────────────────────────────────────────────────────────────
+
 class App(tk.Tk):
     def __init__(self):
         super().__init__()
@@ -218,8 +218,10 @@ class App(tk.Tk):
         self.resizable(True, True)
         self.minsize(960, 680)
 
+
         self.model = StudentModel()
-        self._manual_rows: list[list] = []   # rows entered manually
+        # rows entered manually
+        self._manual_rows: list[list] = []   
 
         if not ML_AVAILABLE:
             messagebox.showerror(
@@ -231,11 +233,11 @@ class App(tk.Tk):
 
         self._build_ui()
 
-    # ─────────────────────────────────────────────────────────────────────────
+    
     # Layout
-    # ─────────────────────────────────────────────────────────────────────────
+    
     def _build_ui(self):
-        # ── Header ────────────────────────────────────────────────────────────
+        # Header 
         hdr = tk.Frame(self, bg=SURFACE, pady=0)
         hdr.pack(fill="x")
         tk.Frame(hdr, bg=BLUE, height=3).pack(fill="x")
@@ -248,7 +250,7 @@ class App(tk.Tk):
                  font=FONT_MONO_SM, bg=SURFACE, fg=TEXT_DIM).pack(
             side="right", pady=4)
 
-        # ── Notebook tabs ─────────────────────────────────────────────────────
+        # Notebook tabs 
         style = ttk.Style(self)
         style.theme_use("default")
         style.configure("Dark.TNotebook",
@@ -267,9 +269,9 @@ class App(tk.Tk):
         self._tab_train(nb)
         self._tab_predict(nb)
 
-    # ─────────────────────────────────────────────────────────────────────────
+    
     # Tab 1 — Data
-    # ─────────────────────────────────────────────────────────────────────────
+    
     def _tab_data(self, nb):
         page = tk.Frame(nb, bg=BG)
         nb.add(page, text="  ① Dataset  ")
@@ -279,7 +281,7 @@ class App(tk.Tk):
         page.columnconfigure(1, weight=2)
         page.rowconfigure(0, weight=1)
 
-        # ── Left: load options ────────────────────────────────────────────────
+        # Left: load options 
         left = self._card(page, "Load Data", col=0, padx=(20, 8), pady=20)
 
         # CSV upload
@@ -337,7 +339,7 @@ class App(tk.Tk):
         tk.Label(left, textvariable=self.manual_count_var,
                  font=FONT_MONO_SM, bg=CARD, fg=TEXT_DIM).pack(pady=(0, 12))
 
-        # ── Right: data preview ───────────────────────────────────────────────
+        # Right: data preview 
         right = self._card(page, "Data Preview", col=1, padx=(8, 20), pady=20)
         self._build_preview_table(right)
 
@@ -388,9 +390,8 @@ class App(tk.Tk):
         self.data_info_var.set(
             f"{n} rows loaded  (showing first {shown})")
 
-    # ─────────────────────────────────────────────────────────────────────────
+    
     # Tab 2 — Train
-    # ─────────────────────────────────────────────────────────────────────────
     def _tab_train(self, nb):
         page = tk.Frame(nb, bg=BG)
         nb.add(page, text="  ② Train Model  ")
@@ -399,7 +400,7 @@ class App(tk.Tk):
         page.columnconfigure(1, weight=1)
         page.rowconfigure(0, weight=1)
 
-        # ── Left: controls ────────────────────────────────────────────────────
+        # Left: controls 
         left = self._card(page, "Training Controls", col=0,
                           padx=(20, 8), pady=20)
 
@@ -428,7 +429,7 @@ class App(tk.Tk):
         tk.Label(left, text=f"  →  Target: {TARGET}", font=FONT_MONO,
                  bg=CARD, fg=BLUE).pack(anchor="w", padx=14, pady=(4, 12))
 
-        self._btn(left, "🚀  Train Model", self._train_model,
+        self._btn(left, " Train Model", self._train_model,
                   color=GREEN, fill="x", padx=14, pady=(8, 4))
 
         self.train_msg_var = tk.StringVar(value="")
@@ -436,7 +437,8 @@ class App(tk.Tk):
                  font=FONT_MONO_SM, bg=CARD, fg=TEXT_DIM,
                  wraplength=220).pack(padx=14, pady=4)
 
-        # ── Right: metrics ────────────────────────────────────────────────────
+        # Right: metrics 
+        
         right = self._card(page, "Model Metrics", col=1,
                            padx=(8, 20), pady=20)
         self._build_metrics_panel(right)
@@ -498,9 +500,9 @@ class App(tk.Tk):
         for f, v in m["coefs"].items():
             self.coef_labels[f].set(f"{v:+.4f}")
 
-    # ─────────────────────────────────────────────────────────────────────────
+    
     # Tab 3 — Predict
-    # ─────────────────────────────────────────────────────────────────────────
+    
     def _tab_predict(self, nb):
         page = tk.Frame(nb, bg=BG)
         nb.add(page, text="  ③ Predict  ")
@@ -509,7 +511,7 @@ class App(tk.Tk):
         page.columnconfigure(1, weight=1)
         page.rowconfigure(0, weight=1)
 
-        # ── Left: input form ──────────────────────────────────────────────────
+        # Left: input form 
         left = self._card(page, "Student Details", col=0,
                           padx=(20, 8), pady=20)
 
@@ -557,7 +559,7 @@ class App(tk.Tk):
             tk.Label(r, text=rng, font=FONT_MONO_SM,
                      bg=CARD, fg=TEXT_MUTE).pack(side="left")
 
-        # ── Right: result ─────────────────────────────────────────────────────
+        # Right: result 
         right = self._card(page, "Prediction Result", col=1,
                            padx=(8, 20), pady=20)
         self._build_result_panel(right)
@@ -608,9 +610,8 @@ class App(tk.Tk):
             relief="flat", wrap="none", padx=8, pady=6)
         self.log_text.pack(fill="both", expand=True)
 
-    # ─────────────────────────────────────────────────────────────────────────
     # Actions
-    # ─────────────────────────────────────────────────────────────────────────
+
     def _load_csv(self):
         path = filedialog.askopenfilename(
             title="Select CSV file",
@@ -710,11 +711,11 @@ class App(tk.Tk):
         self.score_var.set(f"{score:.1f}")
 
         # Grade label
-        if score >= 90:   grade = "🏆  Excellent"
-        elif score >= 75: grade = "✅  Good"
-        elif score >= 60: grade = "📘  Average"
-        elif score >= 40: grade = "⚠️  Below Average"
-        else:             grade = "🔴  At Risk"
+        if score >= 90:   grade = "Excellent"
+        elif score >= 75: grade = "Good"
+        elif score >= 60: grade = "Average"
+        elif score >= 40: grade = "Below Average"
+        else:             grade = "At Risk"
         self.grade_var.set(grade)
 
         # Append to log
@@ -734,9 +735,9 @@ class App(tk.Tk):
         self.score_var.set("—")
         self.grade_var.set("")
 
-    # ─────────────────────────────────────────────────────────────────────────
+    
     # Helper Widgets
-    # ─────────────────────────────────────────────────────────────────────────
+    
     def _card(self, parent, title, col, padx=(0, 0), pady=0):
         outer = tk.Frame(parent, bg=BORDER)
         outer.grid(row=0, column=col, sticky="nsew", padx=padx, pady=pady)
@@ -775,9 +776,8 @@ class App(tk.Tk):
         self.status_var.set(("✓  " if ok else "✗  ") + msg)
 
 
-# ─────────────────────────────────────────────────────────────────────────────
+
 # Entry Point
-# ─────────────────────────────────────────────────────────────────────────────
 if __name__ == "__main__":
     app = App()
     app.mainloop()
